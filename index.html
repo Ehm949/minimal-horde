@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MINIMAL HORDE — IDLE · Ciudad Marea</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ============ CONTENEDOR DEL JUEGO ============ -->
+<div id="game">
+  <header id="hud">
+    <div class="brand">MINIMAL HORDE <span>// IDLE</span></div>
+    <div id="res-bar"></div>
+    <div id="hud-right">
+      <button id="btn-shop" class="hudbtn shopbtn">TIENDA</button>
+      <button id="btn-progress" class="hudbtn">LOGROS 0/27</button>
+      <button class="hudbtn" id="btn-accel"></button>
+      <button id="btn-stats" class="hudbtn">STATS</button>
+      <button id="btn-rebirth" class="hudbtn rebirthbtn">RENACER</button>
+      <button id="btn-settings" class="hudbtn">AJUSTES</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="battle-wrap">
+      <canvas id="battle"></canvas>
+
+      <div id="levelPanel">
+        <div id="levelBadge">
+          <div class="badge-inner">
+            <div id="levelLabel">NIVEL</div>
+            <div id="levelValue">1</div>
+          </div>
+        </div>
+        <div id="xpBarVertical">
+          <div id="xpBarFillVertical"></div>
+          <div id="xpBarMarks"></div>
+          <div id="xpBarTextVertical">0 / 25</div>
+        </div>
+      </div>
+
+      <div id="distanceBox">
+        <div id="distanceLabel">DISTANCIA</div>
+        <div id="distanceValue">0 m</div>
+        <div id="distSub">JEFE EN 500 m</div>
+      </div>
+
+      <div id="bossBar" class="hidden">
+        <div id="bossName">CIRGRAN</div>
+        <div id="bossOuter"><div id="bossFill"></div></div>
+      </div>
+
+      <div id="healthBarContainer">
+        <div id="healthBarLabel">VIDA</div>
+        <div id="healthBarRow">
+          <div id="healthBarOuter">
+            <div id="healthBarDamage"></div>
+            <div id="healthBarFill"></div>
+            <div id="healthBarSegments"></div>
+          </div>
+          <div id="healthBarText">100<span class="health-separator">/</span>100</div>
+        </div>
+      </div>
+
+      <div id="drop-hint">▼ SUELTA AQUÍ PARA CAMBIAR DE HÉROE ▼</div>
+    </section>
+
+    <section id="right">
+      <div id="tree-head">
+        <div id="tree-hero">—</div>
+        <div id="tree-info"></div>
+      </div>
+      <div id="tree-wrap"><canvas id="tree"></canvas></div>
+      <div id="tray-head">
+        <span class="tray-title">ZONA DE ESPERA · ARRASTRA UN HÉROE AL COMBATE</span>
+      </div>
+      <div id="tray"><canvas id="trayCanvas"></canvas></div>
+
+      <!-- ▼▼ PANEL (STATS / TIENDA / LOGROS) ANCLADO A LA COLUMNA DERECHA ▼▼ -->
+      <div id="panel" class="hidden"><div id="panel-box"></div></div>
+    </section>
+  </main>
+
+  <div id="toasts"></div>
+</div>
+
+<!-- ============ FUERA DEL CONTENEDOR ============ -->
+<div id="levelup-overlay" class="hidden"><div id="levelup-box"></div></div>
+<div id="drag-ghost" class="hidden"></div>
+
+<!-- ============ ÁRBOL DE RENACIMIENTO ============ -->
+<div id="rebirth-overlay" class="hidden">
+  <div id="rebirth-head">
+    <div class="rebirth-title">ÁRBOL DE RENACIMIENTO</div>
+    <div id="rebirth-points">PUNTOS: <span id="rebirth-points-val">0</span></div>
+    <button id="rebirth-close" class="hudbtn">CERRAR</button>
+  </div>
+  <div id="rebirth-canvas-wrap">
+    <canvas id="rebirth"></canvas>
+  </div>
+</div>
+
+<!-- ============ PORTADA ============ -->
+<div id="cover">
+  <div id="langScreen" class="hidden">
+    <div class="lang-title">Select your language / Selecciona tu idioma</div>
+    <div class="lang-buttons">
+      <button class="lang-btn" id="btn-es">
+        <svg class="flag" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="200" fill="#ffffff"/>
+          <rect x="0" y="0" width="300" height="68" fill="#000000"/>
+          <rect x="0" y="132" width="300" height="68" fill="#000000"/>
+        </svg>
+        <div class="lang-name">Español</div>
+      </button>
+      <button class="lang-btn" id="btn-en">
+        <svg class="flag" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <clipPath id="ukq-tl"><rect x="0" y="0" width="150" height="100"/></clipPath>
+            <clipPath id="ukq-tr"><rect x="150" y="0" width="150" height="100"/></clipPath>
+            <clipPath id="ukq-bl"><rect x="0" y="100" width="150" height="100"/></clipPath>
+            <clipPath id="ukq-br"><rect x="150" y="100" width="150" height="100"/></clipPath>
+          </defs>
+          <rect width="300" height="200" fill="#000000"/>
+          <g stroke="#ffffff" stroke-width="68" stroke-linecap="square">
+            <line x1="0" y1="0" x2="300" y2="200"/>
+            <line x1="300" y1="0" x2="0" y2="200"/>
+          </g>
+          <g stroke="#000000" stroke-width="20" stroke-linecap="butt">
+            <g clip-path="url(#ukq-tl)"><line x1="-6.65" y1="9.99" x2="293.35" y2="209.99"/></g>
+            <g clip-path="url(#ukq-br)"><line x1="6.65" y1="-9.99" x2="306.65" y2="190.01"/></g>
+            <g clip-path="url(#ukq-tr)"><line x1="309.99" y1="6.65" x2="9.99" y2="206.65"/></g>
+            <g clip-path="url(#ukq-bl)"><line x1="290.01" y1="-6.65" x2="-9.99" y2="193.35"/></g>
+          </g>
+          <g stroke="#ffffff" stroke-width="72">
+            <line x1="150" y1="0" x2="150" y2="200"/>
+            <line x1="0" y1="100" x2="300" y2="100"/>
+          </g>
+          <g stroke="#000000" stroke-width="40">
+            <line x1="150" y1="0" x2="150" y2="200"/>
+            <line x1="0" y1="100" x2="300" y2="100"/>
+          </g>
+          <rect width="300" height="200" fill="none" stroke="#000000" stroke-width="4"/>
+        </svg>
+        <div class="lang-name">English</div>
+      </button>
+    </div>
+  </div>
+  <div id="titleScreen" class="hidden">
+    <div class="cover-title">MINIMAL<br>HORDE</div>
+    <div class="cover-line"></div>
+    <div class="cover-sub" id="coverSub">IDLE GAME</div>
+    <button class="cover-start" id="btn-start">PRESS ANY KEY TO START</button>
+  </div>
+</div>
+
+<!-- ============ TUTORIAL ============ -->
+<div id="tutorial" class="hidden">
+  <div id="tut-spot"></div>
+  <div id="tut-box">
+    <div id="tut-head"><span id="tut-title"></span><span id="tut-count"></span></div>
+    <div id="tut-text"></div>
+    <button id="tut-next">SIGUIENTE</button>
+  </div>
+</div>
+
+<canvas id="fxCanvas"></canvas>
+
+<!-- Cruceta global -->
+<div id="crosshair">
+  <svg width="28" height="28" viewBox="0 0 28 28">
+    <path d="M2 14h8M18 14h8M14 2v8M14 18v8" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+    <path d="M2 14h8M18 14h8M14 2v8M14 18v8" stroke="#000" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="14" cy="14" r="2" fill="#000" stroke="#fff" stroke-width="1.5"/>
+  </svg>
+</div>
+
+<canvas id="introCanvas"></canvas>
+
+<script type="module" src="js/main.js"></script>
+<script type="module" src="js/ciudad.js"></script>
+</body>
+</html>
