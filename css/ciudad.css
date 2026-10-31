@@ -1,0 +1,120 @@
+/* ---------- conexión con Ciudad Marea (mismo estilo del juego: negro, blanco, rojo y oro) ---------- */
+#cm-gate,#cm-panel,#cm-victoria{position:fixed;inset:0;z-index:9000;display:flex;align-items:center;justify-content:center;padding:16px;
+  background:rgba(0,0,0,.86);font-family:'Courier New',monospace;color:#fff;box-sizing:border-box;overflow:auto}
+#cm-gate[hidden],#cm-panel[hidden],#cm-victoria[hidden]{display:none}
+#cm-victoria{z-index:9100;background:rgba(0,0,0,.92)}
+.cm-card{background:#000;border:2px solid #E53935;box-shadow:6px 6px 0 #333;padding:22px 22px 18px;width:min(440px,100%);
+  display:flex;flex-direction:column;gap:12px;box-sizing:border-box}
+.cm-card h1{margin:0;font-size:24px;letter-spacing:3px;color:#fff;line-height:1.15}
+.cm-k{font-size:11px;letter-spacing:3px;color:#E53935}
+.cm-card p{margin:0;font-size:13px;line-height:1.45;font-weight:normal;color:#ddd}
+.cm-card b{color:#fff}
+.cm-oro{color:#FFD700!important}
+.cm-card label{display:flex;flex-direction:column;gap:5px;font-size:11px;letter-spacing:2px;color:#aaa}
+.cm-card input{background:#000;color:#fff;border:2px solid #555;padding:10px 12px;font:bold 15px 'Courier New',monospace;outline:none}
+.cm-card input:focus{border-color:#E53935}
+.cm-go{padding:12px;font-size:14px;letter-spacing:3px;background:#E53935!important;color:#000!important}
+.cm-go:hover{background:#ff5a55!important}
+.cm-err{min-height:16px;color:#FF8A80;font-size:12px}
+.cm-note{font-size:11.5px!important;color:#999!important}
+.cm-note a{color:#FFD700}
+.cm-demo{color:#FFD700!important}
+.cm-cred{border-top:1px solid #333;padding-top:10px}
+.cm-btn{border-color:#FFD700!important;color:#FFD700!important}
+.cm-stats{display:grid;gap:8px}
+.cm-stats div{display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-bottom:1px solid #222;padding-bottom:6px}
+.cm-stats span{font-size:11px;letter-spacing:1px;color:#aaa}
+.cm-stats b{font-size:18px}
+.cm-movs{list-style:none;margin:0;padding:0;display:grid;gap:4px;font-size:12px}
+.cm-movs li{display:grid;grid-template-columns:1fr auto auto;gap:10px;color:#bbb}
+.cm-movs li b{color:#FFD700}
+.cm-movs small{color:#666}
+.cm-acts{display:flex;flex-wrap:wrap;gap:8px}
+.cm-acts .hudbtn{text-decoration:none;font-size:12px;display:inline-flex;align-items:center;justify-content:center;line-height:1.2}
+@media (max-width:520px){.cm-card{padding:18px 16px}.cm-card h1{font-size:20px}}
+
+/* ---------- panel con pestañas ---------- */
+#cm-panel{align-items:flex-start}
+.cm-wide{width:min(520px,100%);margin:auto 0}
+.cm-top{display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
+.cm-orobig{text-align:right;line-height:1}
+.cm-orobig b{font-size:26px;display:block}
+.cm-orobig span{font-size:10px;letter-spacing:3px;color:#aaa}
+.cm-tabs{display:grid;grid-template-columns:repeat(4,1fr);border:2px solid #333}
+.cm-tab{background:#000;color:#888;border:0;border-right:2px solid #333;padding:9px 2px;font:bold 11px 'Courier New',monospace;letter-spacing:1px;position:relative}
+.cm-tab:last-child{border-right:0}
+.cm-tab.on{background:#E53935;color:#000}
+.cm-dot::after{content:'';position:absolute;top:5px;right:6px;width:7px;height:7px;background:#FFD700;border-radius:50%;animation:cmLate 1s infinite}
+@keyframes cmLate{50%{opacity:.25}}
+.cm-body{display:flex;flex-direction:column;gap:10px;min-height:160px}
+.cm-mini{font-size:12px!important;color:#aaa!important}
+.cm-sub{font-size:11px;letter-spacing:3px;color:#E53935;margin-top:4px}
+/* clima */
+.cm-clima{border:2px solid #555;padding:10px 12px;display:grid;grid-template-columns:1fr auto;gap:2px 10px}
+.cm-clima b{font-size:15px;letter-spacing:2px}
+.cm-clima span{font-size:12px;color:#aaa;align-self:center}
+.cm-clima p{grid-column:1/-1;font-size:12px!important}
+.cm-clima.cm-verde{border-color:#43A047}.cm-clima.cm-verde b{color:#66BB6A}
+.cm-clima.cm-rojo{border-color:#E53935}.cm-clima.cm-rojo b{color:#FF8A80}
+.cm-clima.cm-tormenta{border-color:#9C27B0}.cm-clima.cm-tormenta b{color:#CE93D8}
+/* bonos */
+.cm-bonos{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.cm-bonos li{display:flex;justify-content:space-between;gap:10px;align-items:center;border-left:3px solid #FFD700;padding:4px 0 4px 9px}
+.cm-bonos li div{display:flex;flex-direction:column;gap:2px}
+.cm-bonos li b{font-size:12px;letter-spacing:1px}
+.cm-bonos li small{font-size:11px;color:#888}
+.cm-bonos li em{font-style:normal;font-weight:bold;font-size:12px;color:#FFD700;text-align:right;max-width:46%}
+.cm-bonos li.off{border-left-color:#444}.cm-bonos li.off em{color:#666;font-weight:normal}
+.cm-chips{display:flex;flex-wrap:wrap;gap:6px}
+.cm-chip{border:2px solid #444;padding:4px 8px;font-size:12px;font-weight:bold}
+.cm-chip.up{color:#66BB6A;border-color:#2E7D32}.cm-chip.down{color:#FF8A80;border-color:#B71C1C}
+/* obras */
+.cm-obras{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.cm-obras li{display:flex;justify-content:space-between;align-items:center;gap:10px;border:2px solid #333;padding:8px 10px}
+.cm-obras li div{display:flex;flex-direction:column;gap:3px}
+.cm-obras li b{font-size:13px;letter-spacing:1px}
+.cm-obras li b small{color:#FFD700;margin-left:4px}
+.cm-obras li > div > small{font-size:11px;color:#888}
+.cm-ob-btns{display:flex;gap:6px;flex:none}
+.cm-ob-btns .hudbtn{border-color:#FFD700;color:#FFD700;font-size:11px;padding:6px 8px}
+.cm-ob-btns .hudbtn.cm-no{border-color:#444;color:#666}
+/* cofre */
+.cm-cofre-box{display:flex;gap:14px;align-items:center}
+.cm-cofre-box b{font-size:14px;letter-spacing:1px}
+.cm-cofre-ico{flex:none;width:56px;height:44px;background:#333;border:3px solid #555;position:relative}
+.cm-cofre-ico::before{content:'';position:absolute;left:-3px;right:-3px;top:12px;height:5px;background:#555}
+.cm-cofre-ico::after{content:'';position:absolute;left:21px;top:16px;width:8px;height:10px;background:#555}
+.cm-cofre-ico.listo{background:#B8860B;border-color:#FFD700;box-shadow:0 0 18px rgba(255,215,0,.5);animation:cmCofre 1.6s ease-in-out infinite}
+.cm-cofre-ico.listo::before,.cm-cofre-ico.listo::after{background:#FFD700}
+@keyframes cmCofre{50%{transform:translateY(-3px) rotate(-2deg)}}
+/* ranking */
+.cm-rank{width:100%;border-collapse:collapse;font-size:12px}
+.cm-rank th{font-size:10px;letter-spacing:1px;color:#888;text-align:left;border-bottom:2px solid #333;padding:4px}
+.cm-rank td{padding:6px 4px;border-bottom:1px solid #222}
+.cm-rank td:first-child{color:#E53935;font-weight:bold}
+.cm-rank tr.yo td{color:#FFD700;font-weight:bold}
+/* meta final */
+.cm-meta{border:2px solid #FFD700;padding:9px 11px;display:flex;flex-direction:column;gap:6px;background:#0d0b00}
+.cm-meta-t{display:flex;justify-content:space-between;gap:8px;font-size:11px;letter-spacing:1px;flex-wrap:wrap}
+.cm-meta-t span{color:#FFD700;letter-spacing:2px}
+.cm-meta-t b{font-size:12px}
+.cm-meta-bar{position:relative;height:12px;background:#222;border:1px solid #444}
+.cm-meta-bar i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#B8860B,#FFD700)}
+.cm-meta-bar u{position:absolute;top:-2px;bottom:-2px;width:2px;background:#000}
+.cm-meta small{font-size:11px;color:#aaa}
+.cm-meta.hecha{background:#1a1500}
+/* botón de la barra según el clima */
+.cm-btn i{font-style:normal}
+.cm-btn.cm-verde i{color:#66BB6A}.cm-btn.cm-rojo i{color:#FF8A80}.cm-btn.cm-tormenta i{color:#CE93D8}
+.cm-btn.cm-hay-cofre{animation:cmBrillo 1.4s ease-in-out infinite}
+@keyframes cmBrillo{50%{box-shadow:3px 3px 0 #333,0 0 14px rgba(255,215,0,.7)}}
+.cm-cerrar{border-color:#fff!important}
+/* victoria */
+.cm-win{border-color:#FFD700;box-shadow:0 0 0 4px #000,0 0 60px rgba(255,215,0,.35);text-align:center}
+.cm-win h1{font-size:30px;color:#FFD700}
+.cm-win .cm-stats div{text-align:left}
+.cm-win .cm-acts{justify-content:center}
+.cm-win-star{font-size:64px;color:#FFD700;line-height:1;animation:cmStar 2.4s ease-in-out infinite}
+@keyframes cmStar{50%{transform:scale(1.15) rotate(12deg)}}
+@media (max-width:520px){.cm-acts{display:grid;grid-template-columns:1fr 1fr}.cm-tab{font-size:10px;letter-spacing:0}.cm-obras li{flex-direction:column;align-items:stretch}.cm-ob-btns .hudbtn{flex:1}.cm-win h1{font-size:24px}}
+@media (prefers-reduced-motion:reduce){.cm-dot::after,.cm-cofre-ico.listo,.cm-btn.cm-hay-cofre,.cm-win-star{animation:none}}
